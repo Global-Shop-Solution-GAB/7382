@@ -1,0 +1,349 @@
+Program.Sub.ScreenSU.Start
+gui.F_BP..create
+gui.F_BP..caption("Entering Qty Information")
+gui.F_BP..size(3765,2565)
+gui.F_BP..position(0,0)
+gui.F_BP..event(unload,ProgEnd)
+gui.F_BP..alwaysontop(False)
+gui.F_BP..fontname("Arial")
+gui.F_BP..fontsize(8)
+gui.F_BP..forecolor(0)
+gui.F_BP..fontstyle(,,,,)
+gui.F_BP..BackColor(-2147483633)
+gui.F_BP..controlbox(True)
+gui.F_BP..maxbutton(True)
+gui.F_BP..minbutton(True)
+gui.F_BP..mousepointer(0)
+gui.F_BP..moveable(True)
+gui.F_BP..sizeable(False)
+gui.F_BP..ShowInTaskBar(True)
+gui.F_BP..titlebar(True)
+gui.F_BP.lblPart.create(label)
+gui.F_BP.lblPart.caption("Part")
+gui.F_BP.lblPart.backstyle(0)
+gui.F_BP.lblPart.visible(True)
+gui.F_BP.lblPart.size(3885,255)
+gui.F_BP.lblPart.zorder(1)
+gui.F_BP.lblPart.position(200,200)
+gui.F_BP.lblPart.enabled(True)
+gui.F_BP.lblPart.alignment(0)
+gui.F_BP.lblPart.fontname("Arial")
+gui.F_BP.lblPart.fontsize(8)
+gui.F_BP.lblPart.BackColor(-2147483633)
+gui.F_BP.lblUM.create(label)
+gui.F_BP.lblUM.caption("Package Type")
+gui.F_BP.lblUM.backstyle(0)
+gui.F_BP.lblUM.visible(True)
+gui.F_BP.lblUM.size(1305,225)
+gui.F_BP.lblUM.zorder(1)
+gui.F_BP.lblUM.position(245,500)
+gui.F_BP.lblUM.enabled(True)
+gui.F_BP.lblUM.alignment(0)
+gui.F_BP.lblUM.fontname("Arial")
+gui.F_BP.lblUM.fontsize(8)
+gui.F_BP.lblUM.BackColor(-2147483633)
+gui.F_BP.lblQty.create(label)
+gui.F_BP.lblQty.caption("Qty")
+gui.F_BP.lblQty.backstyle(0)
+gui.F_BP.lblQty.visible(True)
+gui.F_BP.lblQty.size(405,255)
+gui.F_BP.lblQty.zorder(1)
+gui.F_BP.lblQty.position(2535,500)
+gui.F_BP.lblQty.enabled(True)
+gui.F_BP.lblQty.alignment(0)
+gui.F_BP.lblQty.fontname("Arial")
+gui.F_BP.lblQty.fontsize(8)
+gui.F_BP.lblQty.BackColor(-2147483633)
+gui.F_BP.cboUM.create(combobox)
+gui.F_BP.cboUM.text("")
+gui.F_BP.cboUM.visible(True)
+gui.F_BP.cboUM.size(1830,330)
+gui.F_BP.cboUM.zorder(0)
+gui.F_BP.cboUM.position(200,700)
+gui.F_BP.cboUM.enabled(True)
+gui.F_BP.cboUM.fontname("Arial")
+gui.F_BP.cboUM.fontsize(8)
+gui.F_BP.txtQty.create(textbox)
+gui.F_BP.txtQty.text("")
+gui.F_BP.txtQty.visible(True)
+gui.F_BP.txtQty.size(615,300)
+gui.F_BP.txtQty.zorder(0)
+gui.F_BP.txtQty.position(2400,700)
+gui.F_BP.txtQty.enabled(True)
+gui.F_BP.txtQty.alignment(2)
+gui.F_BP.txtQty.fontname("Arial")
+gui.F_BP.txtQty.fontsize(8)
+gui.F_BP.txtQty.maxLength(5)
+gui.F_BP.txtQty.event(lostfocus,Calc)
+gui.F_BP.txtQty.BackColor(-2147483643)
+gui.F_BP.cmdUpdate.create(button)
+gui.F_BP.cmdUpdate.caption("Update")
+gui.F_BP.cmdUpdate.visible(True)
+gui.F_BP.cmdUpdate.size(855,375)
+gui.F_BP.cmdUpdate.zorder(0)
+gui.F_BP.cmdUpdate.position(245,1390)
+gui.F_BP.cmdUpdate.enabled(True)
+gui.F_BP.cmdUpdate.fontname("Arial")
+gui.F_BP.cmdUpdate.fontsize(8)
+gui.F_BP.cmdUpdate.event(click,Update)
+gui.F_BP.txtTQty.create(textbox)
+gui.F_BP.txtTQty.text("")
+gui.F_BP.txtTQty.visible(True)
+gui.F_BP.txtTQty.size(870,300)
+gui.F_BP.txtTQty.zorder(0)
+gui.F_BP.txtTQty.position(2170,1390)
+gui.F_BP.txtTQty.enabled(False)
+gui.F_BP.txtTQty.alignment(1)
+gui.F_BP.txtTQty.fontname("Arial")
+gui.F_BP.txtTQty.fontsize(8)
+gui.F_BP.txtTQty.BackColor(-2147483643)
+gui.F_BP.lblTQty.create(label)
+gui.F_BP.lblTQty.caption("EA")
+gui.F_BP.lblTQty.backstyle(0)
+gui.F_BP.lblTQty.visible(True)
+gui.F_BP.lblTQty.size(330,255)
+gui.F_BP.lblTQty.zorder(1)
+gui.F_BP.lblTQty.position(3115,1470)
+gui.F_BP.lblTQty.enabled(True)
+gui.F_BP.lblTQty.alignment(0)
+gui.F_BP.lblTQty.fontname("Arial")
+gui.F_BP.lblTQty.fontsize(8)
+gui.F_BP.lblTQty.BackColor(-2147483633)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.Global.sPart.Declare(String)
+Variable.Global.sRev.Declare(String)
+Variable.Global.sLoc.Declare(String)
+Variable.Global.iCtn.Declare(Long,0)
+Variable.Global.iPallet.Declare(Long,0)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.ODBC.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+V.Global.sPart.Set(V.Passed.000071)
+V.Global.sRev.Set(V.Passed.000072)
+F.Intrinsic.Control.If(V.Global.sRev,<>,"")
+	F.Intrinsic.String.Concat(V.Global.sPart,"-",V.Global.sRev,V.Global.sPart)
+F.Intrinsic.Control.EndIf
+V.Global.sLoc.Set(V.Passed.000074)
+'F.Intrinsic.UI.Msgbox(V.Caller.Hook)
+'F.Intrinsic.Debug.Stop
+F.Intrinsic.Control.If(V.Caller.Hook,=,12455)
+	F.Intrinsic.Control.CallSub(Fill_um)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,12511)
+	F.Intrinsic.Control.CallSub(Uf_update)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,12620)
+	F.Intrinsic.Control.CallSub(Fill_um)
+'	F.Intrinsic.Debug.ShowCallerInfo
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,12440)
+	F.Intrinsic.Control.CallSub(Populate)
+	'F.Intrinsic.Control.End
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,12520)
+	F.Intrinsic.Control.CallSub(Delete)
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,12530)
+'	F.Intrinsic.Debug.Stop
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000001,"Lock",0)
+F.Intrinsic.Control.Else
+	'Hook No 12445
+	F.Intrinsic.Control.CallSub(Line_change)
+F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.CallSub(Progend)
+
+Program.Sub.Main.End
+
+Program.Sub.ProgEnd.Start
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.End
+
+Program.Sub.ProgEnd.End
+
+Program.Sub.FIll_UM.Start
+V.Local.sSQL.Declare(String)
+V.Local.sPLbl.Declare(String)
+V.Local.iQty.Declare(Long)
+V.Local.fQty.Declare(Float)
+'F.Intrinsic.Debug.Stop
+
+F.Intrinsic.String.Concat("Select Part,Location,Pallet_Flag,Cntnrs_Per_Pallet,Pcs_Per_Cntnr from INVENTORY_MST3 where Part='",V.Global.sPart,"' and Location='",V.Global.sLoc,"' and (PCS_Per_Cntnr>0 or Pallet_Flag='Y')",V.Local.sSQL)
+F.ODBC.Connection!con.OpenRecordsetRO("rstBP",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.con!rstBP.EOF,=,False)
+	V.Global.iCtn.Set(V.ODBC.con!rstBP.FieldVal!PCS_PER_CNTNR)
+	'F.Intrinsic.Math.Mult(V.ODBC.con!rstBP.FieldVal!PCS_PER_CNTNR,V.ODBC.con!rstBP.FieldVal!CNTNRS_PER_PALLET,V.Global.iPallet)
+	V.Global.iPallet.Set(V.ODBC.con!rstBP.FieldVal!CNTNRS_PER_PALLET)
+	F.Intrinsic.String.Concat("Part ",V.Global.sPart,V.Local.sPLbl)
+	Gui.F_BP.lblPart.Caption(V.Local.sPLbl)
+F.Intrinsic.Control.Else
+	'F.Intrinsic.UI.Msgbox("Part selected has no matching Container or Pallet information")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+F.ODBC.con!rstBP.Close
+
+Gui.F_BP.cboUM.AddItem("Box",0)
+Gui.F_BP.cboUM.AddItem("Pallet",1)
+Gui.F_BP.cboUM.AddItem("Each",2)
+F.Intrinsic.Control.If(V.Passed.000309,=,"")
+	Gui.F_BP.cboUM.Text("Box")
+F.Intrinsic.Control.Else
+	Gui.F_BP.cboUM.Text(V.Passed.000309)
+F.Intrinsic.Control.EndIf
+Gui.F_BP.txtQty.Text(V.Passed.000308)
+
+'F.Intrinsic.Debug.ShowCallerInfo
+Gui.F_BP..Show
+Gui.F_BP.txtQty.SetFocus
+
+
+Program.Sub.FIll_UM.End
+
+Program.Sub.Update.Start
+V.Local.iQty.Declare(Float)
+V.Local.sUM.Declare(String)
+V.Local.bNum.Declare(Boolean)
+
+Gui.F_BP..MousePointer(11)
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000001,"LOCK",0)
+
+F.Intrinsic.Math.IsNumeric(V.Screen.F_BP!txtQty.Text,V.Local.bNum)
+F.Intrinsic.Control.If(V.Local.bNum,=,True)
+	F.Intrinsic.Control.SelectCase(V.Screen.F_BP!cboUM.Text)
+		F.Intrinsic.Control.Case("Box")
+			F.Intrinsic.Math.Mult(V.Screen.F_BP!txtQty.Text,V.Global.iCtn,V.Local.iQty)
+		F.Intrinsic.Control.Case("Pallet")
+			F.Intrinsic.Math.Mult(V.Screen.F_BP!txtQty.Text,V.Global.iPallet,V.Local.iQty)
+		F.Intrinsic.Control.Case("Each")
+			V.Local.iQty.Set(V.Screen.F_BP!txtQty.Text)
+	F.Intrinsic.Control.EndSelect
+	'F.Intrinsic.UI.Msgbox(V.Local.iQty)
+	'Order Qty
+	F.Intrinsic.Debug.Stop
+	V.Passed.000001.Set(V.Local.iQty)
+	'UF 1
+	'F.Intrinsic.Debug.Stop
+	V.Passed.000308.Set(V.Screen.F_BP!txtQty.Text)
+
+F.Intrinsic.Control.Else
+	V.Passed.000001.Set(0)
+	V.Passed.000308.Set(0)
+F.Intrinsic.Control.EndIf
+'Order UM
+V.Passed.000302.Set("EA")
+'UF 2
+V.Passed.000309.Set(V.Screen.F_BP!cboUM.Text)
+Gui.F_BP..MousePointer(0)
+'F.Intrinsic.Debug.ShowCallerInfo
+'F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000001,"LOCK",1)
+
+F.Intrinsic.Control.CallSub(Progend)
+
+Program.Sub.Update.End
+
+Program.Sub.UF_Update.Start
+V.Local.sSQL.Declare(String)
+V.Local.sOrder.Declare(String)
+V.Local.sLine.Declare(String)
+
+'F.Intrinsic.Debug.Stop
+F.Intrinsic.String.Format(V.Passed.000005,"0000000",V.Local.sOrder)
+F.Intrinsic.Math.Mult(V.Passed.000013,10,V.Local.sLine)
+F.Intrinsic.String.Format(V.Local.sLine,"0000",V.Local.sLine)
+F.Intrinsic.String.Concat("Select * from Order_Lines where Order_No='",V.Local.sOrder,"' and Record_No='",V.Local.sLine,"' and Record_Type='L' ",V.Local.sSQL)
+'F.Intrinsic.UI.Msgbox(V.Local.sSQL)
+F.ODBC.Connection!con.OpenRecordsetRW("rstUF",V.Local.sSQL)
+F.ODBC.con!rstUF.Set!User_1(V.Passed.000308)
+F.ODBC.con!rstUF.Set!User_2(V.Passed.000309)
+F.ODBC.con!rstUF.Update
+F.ODBC.con!rstUF.Close
+F.Intrinsic.Control.CallSub(Progend)
+
+Program.Sub.UF_Update.End
+
+Program.Sub.Line_Change.Start
+V.Local.sSQL.Declare(String)
+V.Local.sOrder.Declare(String)
+V.Local.sLine.Declare(String)
+
+'F.Intrinsic.UI.Msgbox("Line_Change")
+F.Intrinsic.String.Format(V.Passed.000005,"0000000",V.Local.sOrder)
+F.Intrinsic.Math.Mult(V.Passed.000013,10,V.Local.sLine)
+F.Intrinsic.String.Format(V.Local.sLine,"0000",V.Local.sLine)
+F.Intrinsic.String.Concat("Select * from Order_Lines where Order_No='",V.Local.sOrder,"' and Record_No='",V.Local.sLine,"' and Record_Type='L' ",V.Local.sSQL)
+F.ODBC.Connection!con.OpenRecordsetRO("rstLine",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.con!rstLine.EOF,=,False)
+	V.Passed.000308.Set(V.ODBC.con!rstLine.FieldVal!User_1)
+	V.Passed.000309.Set(V.ODBC.con!rstLine.FieldVal!User_2)
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Debug.Stop
+
+F.Intrinsic.String.Concat("Select Part,Location,Pallet_Flag,Cntnrs_Per_Pallet,Pcs_Per_Cntnr from INVENTORY_MST3 where Part='",V.Global.sPart,"' and Location='",V.Global.sLoc,"' and (PCS_Per_Cntnr>0 or Pallet_Flag='Y')",V.Local.sSQL)
+F.ODBC.Connection!con.OpenRecordsetRO("rstP",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.con!rstP.EOF,=,False)
+	'F.Intrinsic.Debug.ShowCallerInfo
+	F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000001,"Lock",1)
+F.Intrinsic.Control.EndIf
+F.ODBC.con!rstP.Close
+
+F.ODBC.con!rstLine.Close
+F.Intrinsic.Control.CallSub(Progend)
+'F.Intrinsic.Control.End
+
+Program.Sub.Line_Change.End
+
+Program.Sub.Populate.Start
+'V.Local.sSQL.Declare(String)
+F.Intrinsic.Debug.Stop
+
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000305,"Hide",0)
+V.Passed.000305.Set("Package Qty")
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000306,"Hide",0)
+V.Passed.000306.Set("Package Type")
+'F.Intrinsic.UI.ChangeCallerProperty(v.Passed.000307,"Hide",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000308,"Hide",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000309,"Hide",0)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000308,"Lock",1)
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000309,"Lock",1)
+'F.Intrinsic.UI.ChangeCallerProperty(v.Passed.000310,"Hide",0)
+V.Passed.000162.Set("Pkg Info")
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000001,"Lock",0)
+F.Intrinsic.Control.End
+
+Program.Sub.Populate.End
+
+Program.Sub.Calc.Start
+V.Local.iQty.Declare(Float)
+V.Local.sUM.Declare(String)
+V.Local.bNum.Declare(Boolean)
+
+Gui.F_BP..MousePointer(11)
+F.Intrinsic.Math.IsNumeric(V.Screen.F_BP!txtQty.Text,V.Local.bNum)
+F.Intrinsic.Control.If(V.Local.bNum,=,True)
+	F.Intrinsic.Control.SelectCase(V.Screen.F_BP!cboUM.Text)
+		F.Intrinsic.Control.Case("Box")
+			F.Intrinsic.Math.Mult(V.Screen.F_BP!txtQty.Text,V.Global.iCtn,V.Local.iQty)
+		F.Intrinsic.Control.Case("Pallet")
+			F.Intrinsic.Math.Mult(V.Screen.F_BP!txtQty.Text,V.Global.iPallet,V.Local.iQty)
+		F.Intrinsic.Control.Case("Each")
+			V.Local.iQty.Set(V.Screen.F_BP!txtQty.Text)
+	F.Intrinsic.Control.EndSelect
+
+	Gui.F_BP.txtTQty.Text(V.Local.iQty)
+F.Intrinsic.Control.Else
+	Gui.F_BP.txtTQty.Text(0)
+F.Intrinsic.Control.EndIf
+Gui.F_BP..MousePointer(0)
+
+Program.Sub.Calc.End
+
+Program.Sub.Delete.Start
+'F.Intrinsic.UI.Msgbox("Delete")
+'F.Intrinsic.Debug.Stop
+F.Intrinsic.UI.ChangeCallerProperty(V.Passed.000001,"Lock",0)
+F.Intrinsic.Control.End
+
+Program.Sub.Delete.End
+
+
